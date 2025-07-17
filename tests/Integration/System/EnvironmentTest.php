@@ -8,6 +8,12 @@ use PHPUnit\Framework\TestCase;
 #[TestDox('Tests of environment variables')]
 class EnvironmentTest extends TestCase
 {
+    private const array SECRET_ENV_VARS = [
+        'APP_SECRET',
+        'MARIADB_PASSWORD',
+        'DATABASE_URL',
+    ];
+
     #[TestDox('The expected environment variables exist')]
     public function testEnvironmentVariables(): void
     {
@@ -31,12 +37,7 @@ class EnvironmentTest extends TestCase
     #[TestDox('Prohibited environment variables are not set')]
     public function testProhibitedEnvironmentVariables(): void
     {
-        $varNames = [
-            'APP_SECRET',
-            'MARIADB_PASSWORD',
-        ];
-
-        foreach ($varNames as $varName) {
+        foreach (self::SECRET_ENV_VARS as $varName) {
             $this->assertFalse(
                 getenv($varName),
                 "Prohibited environment variable $varName should not be set"
@@ -47,12 +48,7 @@ class EnvironmentTest extends TestCase
     #[TestDox('Secret environment variables are set')]
     public function testSecretEnvironmentVariables(): void
     {
-        $varNames = [
-            'APP_SECRET',
-            'MARIADB_PASSWORD',
-        ];
-
-        foreach ($varNames as $varName) {
+        foreach (self::SECRET_ENV_VARS as $varName) {
             $this->assertNotEmpty(
                 $_ENV[$varName],
                 "Expected secret environment variable $varName to be set and to have a value"

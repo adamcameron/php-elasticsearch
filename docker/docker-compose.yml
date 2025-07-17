@@ -36,7 +36,6 @@ services:
 
     secrets:
       - app_secrets
-      - mariadb_password
 
   mariadb:
     container_name: db
