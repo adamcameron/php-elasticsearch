@@ -11,8 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomeController extends AbstractController
 {
     public function __construct(
-        private readonly VersionService $versionService,
-        private readonly RequestStack $requestStack,
+        private readonly VersionService $versionService
     ) {
     }
 

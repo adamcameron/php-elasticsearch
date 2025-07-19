@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Course Details{% endblock %}
+
+{% block body %}
+    <h1>{{ course.title }}</h1>
+    <ul>
+        <li>ID: {{ course.id }}</li>
+        <li>Code: {{ course.code }}</li>
+        <li>Department:
+            {% if course.department %}
+                <a href="{{ path('department_detail', {id: course.department.id}) }}">
+                    {{ course.department.name }}
+                </a>
+            {% else %}
+                N/A
+            {% endif %}
+        </li>
+        <li>Instructor:
+            {% if course.instructor %}
+                <a href="{{ path('instructor_detail', {id: course.instructor.id}) }}">
+                    {{ course.instructor.fullName }}
+                </a>
+            {% else %}
+                N/A
+            {% endif %}
+        </li>
+        <li>Description: {{ course.description }}</li>
+    </ul>
+
+    <h2>Enrolled Students</h2>
+    {% if course.enrolments|length > 0 %}
+        <ul>
+            {% for enrolment in course.enrolments %}
+                <li>
+                    <a href="{{ path('student_detail', {id: enrolment.student.id}) }}">
+                        {{ enrolment.student.fullName }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No students enrolled.</p>
+    {% endif %}
+    <a href="{{ path('course_list') }}">Back to list</a>
+{% endblock %}

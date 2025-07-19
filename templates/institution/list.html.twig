@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Institutions{% endblock %}
+
+{% block body %}
+    <h1>Institutions</h1>
+    <ul>
+        {% for institution in institutions %}
+            <li>
+                <a href="{{ path('institution_detail', {id: institution.id}) }}">
+                    {{ institution.name }}
+                </a>
+            </li>
+        {% endfor %}
+<ul>
+{% endblock %}

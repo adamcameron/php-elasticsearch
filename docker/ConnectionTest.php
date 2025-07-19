@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Integration\Database;
+namespace docker;
 
 use App\Tests\Integration\Fixtures\Database as DB;
 use PHPUnit\Framework\Attributes\TestDox;

@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Assignment Details{% endblock %}
+
+{% block body %}
+    <h1>{{ assignment.title }}</h1>
+    <ul>
+        <li>ID: {{ assignment.id }}</li>
+        <li>Course:
+            {% if assignment.course %}
+                <a href="{{ path('course_detail', {id: assignment.course.id}) }}">
+                    {{ assignment.course.title }}
+                </a>
+            {% else %}
+                N/A
+            {% endif %}
+        </li>
+        <li>Description: {{ assignment.description }}</li>
+    </ul>
+    <a href="{{ path('assignment_list') }}">Back to list</a>
+{% endblock %}

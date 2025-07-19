@@ -1,0 +1,273 @@
+<?php
+
+namespace App\Tests\Fixtures;
+
+enum Department: string
+{
+    case Art = 'Art';
+    case Biology = 'Biology';
+    case Chemistry = 'Chemistry';
+    case Commerce = 'Commerce';
+    case ComputerScience = 'Computer Science';
+    case Education = 'Education';
+    case Engineering = 'Engineering';
+    case EnvironmentalScience = 'Environmental Science';
+    case Geography = 'Geography';
+    case History = 'History';
+    case Languages = 'Languages';
+    case Law = 'Law';
+    case Mathematics = 'Mathematics';
+    case Medicine = 'Medicine';
+    case Music = 'Music';
+    case Philosophy = 'Philosophy';
+    case Physics = 'Physics';
+    case PoliticalScience = 'Political Science';
+    case Psychology = 'Psychology';
+    case Sociology = 'Sociology';
+
+    public function courseTitles(): array
+    {
+        return match($this) {
+            self::Art => [
+                'Art History',
+                'Ceramics',
+                'Contemporary Art',
+                'Digital Art',
+                'Drawing Fundamentals',
+                'Painting Techniques',
+                'Photography',
+                'Printmaking',
+                'Sculpture',
+                'Visual Communication',
+            ],
+            self::Biology => [
+                'Biostatistics',
+                'Cell Biology',
+                'Ecology',
+                'Evolutionary Biology',
+                'Genetics',
+                'Human Anatomy',
+                'Immunology',
+                'Microbiology',
+                'Molecular Biology',
+                'Plant Physiology',
+            ],
+            self::Chemistry => [
+                'Analytical Chemistry',
+                'Biochemistry',
+                'Chemical Thermodynamics',
+                'Environmental Chemistry',
+                'Inorganic Chemistry',
+                'Medicinal Chemistry',
+                'Organic Chemistry',
+                'Physical Chemistry',
+                'Polymer Chemistry',
+                'Spectroscopy',
+            ],
+            self::Commerce => [
+                'Accounting Principles',
+                'Business Ethics',
+                'Business Law',
+                'Entrepreneurship',
+                'Finance 101',
+                'International Trade',
+                'Marketing Fundamentals',
+                'Microeconomics',
+                'Organizational Behaviour',
+                'Taxation',
+            ],
+            self::ComputerScience => [
+                'Algorithms',
+                'Computer Networks',
+                'Cybersecurity',
+                'Data Structures',
+                'Databases',
+                'Machine Learning',
+                'Operating Systems',
+                'Python 101',
+                'Software Engineering',
+                'Web Development',
+            ],
+            self::Education => [
+                'Assessment and Evaluation',
+                'Classroom Management',
+                'Curriculum Development',
+                'Early Childhood Education',
+                'Educational Leadership',
+                'Educational Psychology',
+                'Foundations of Education',
+                'Instructional Technology',
+                'Multicultural Education',
+                'Special Education',
+            ],
+            self::Engineering => [
+                'Control Systems',
+                'Dynamics',
+                'Electrical Circuits',
+                'Engineering Design',
+                'Fluid Mechanics',
+                'Introduction to Engineering',
+                'Materials Science',
+                'Project Management',
+                'Statics',
+                'Thermodynamics',
+            ],
+            self::EnvironmentalScience => [
+                'Climate Change',
+                'Conservation Biology',
+                'Ecology',
+                'Environmental Chemistry',
+                'Environmental Impact Assessment',
+                'Environmental Policy',
+                'Geology',
+                'Renewable Energy',
+                'Sustainable Development',
+                'Water Resources',
+            ],
+            self::Geography => [
+                'Cartography',
+                'Climatology',
+                'Economic Geography',
+                'Environmental Geography',
+                'Geographic Information Systems',
+                'Geopolitics',
+                'Human Geography',
+                'Physical Geography',
+                'Population Geography',
+                'Urban Geography',
+            ],
+            self::History => [
+                'Ancient Civilizations',
+                'Economic History',
+                'History of Art',
+                'History of Science',
+                'History of Technology',
+                'Medieval History',
+                'Modern Europe',
+                'Political History',
+                'Social Movements',
+                'World History',
+            ],
+            self::Languages => [
+                'Chinese Characters',
+                'English Literature',
+                'French Language',
+                'German Grammar',
+                'Italian for Beginners',
+                'Japanese Language',
+                'Linguistics',
+                'Russian Literature',
+                'Spanish Conversation',
+                'Translation Studies',
+            ],
+            self::Law => [
+                'Civil Procedure',
+                'Constitutional Law',
+                'Contract Law',
+                'Corporate Law',
+                'Criminal Law',
+                'Human Rights Law',
+                'International Law',
+                'Legal Research',
+                'Property Law',
+                'Tort Law',
+            ],
+            self::Mathematics => [
+                'Calculus I',
+                'Differential Equations',
+                'Discrete Mathematics',
+                'Geometry',
+                'Linear Algebra',
+                'Mathematical Logic',
+                'Number Theory',
+                'Probability Theory',
+                'Real Analysis',
+                'Statistics',
+            ],
+            self::Medicine => [
+                'Biochemistry',
+                'Clinical Medicine',
+                'Epidemiology',
+                'Human Anatomy',
+                'Medical Ethics',
+                'Microbiology',
+                'Pathology',
+                'Pharmacology',
+                'Physiology',
+                'Surgery Basics',
+            ],
+            self::Music => [
+                'Choral Studies',
+                'Composition',
+                'Ethnomusicology',
+                'History of Music',
+                'Instrumental Techniques',
+                'Jazz Studies',
+                'Music Education',
+                'Music Technology',
+                'Music Theory',
+                'Performance Studies',
+            ],
+            self::Philosophy => [
+                'Aesthetics',
+                'Ancient Philosophy',
+                'Epistemology',
+                'Ethics',
+                'Existentialism',
+                'Logic',
+                'Metaphysics',
+                'Philosophy of Mind',
+                'Philosophy of Science',
+                'Political Philosophy',
+            ],
+            self::Physics => [
+                'Astrophysics',
+                'Classical Mechanics',
+                'Electromagnetism',
+                'Nuclear Physics',
+                'Optics',
+                'Particle Physics',
+                'Quantum Physics',
+                'Solid State Physics',
+                'Statistical Physics',
+                'Thermodynamics',
+            ],
+            self::PoliticalScience => [
+                'Comparative Politics',
+                'Constitutional Law',
+                'Elections and Voting',
+                'Global Governance',
+                'Human Rights',
+                'International Relations',
+                'Political Economy',
+                'Political Institutions',
+                'Political Theory',
+                'Public Policy',
+            ],
+            self::Psychology => [
+                'Abnormal Psychology',
+                'Cognitive Psychology',
+                'Developmental Psychology',
+                'Educational Psychology',
+                'Health Psychology',
+                'Introduction to Psychology',
+                'Neuropsychology',
+                'Personality Theory',
+                'Psychological Assessment',
+                'Social Psychology',
+            ],
+            self::Sociology => [
+                'Criminology',
+                'Cultural Sociology',
+                'Family Sociology',
+                'Gender Studies',
+                'Introduction to Sociology',
+                'Political Sociology',
+                'Social Theory',
+                'Sociology of Education',
+                'Sociology of Religion',
+                'Urban Sociology',
+            ],
+        };
+    }
+}

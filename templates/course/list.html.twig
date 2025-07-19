@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Courses by Institution & Department{% endblock %}
+
+{% block body %}
+    <h1>Courses by Institution & Department</h1>
+    <ul>
+        {% for institution in institutions %}
+            <li>
+                <a href="{{ path('institution_detail', {id: institution.id}) }}">
+                    {{ institution.name }}
+                </a>
+                <ul>
+                    {% for department in institution.departments %}
+                        <li>
+                            <a href="{{ path('department_detail', {id: department.id}) }}">
+                                {{ department.name }}
+                            </a>
+                            <ul>
+                                {% for course in department.courses %}
+                                    <li>
+                                        <a href="{{ path('course_detail', {id: course.id}) }}">
+                                            {{ course.title }} ({{ course.code }})
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{{ path('course_list') }}">Back to list</a>
+{% endblock %}

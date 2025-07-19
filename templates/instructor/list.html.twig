@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Instructors by Institution & Department{% endblock %}
+
+{% block body %}
+    <h1>Instructors by Institution & Department</h1>
+    <ul>
+        {% for institution in institutions %}
+            <li>
+                <a href="{{ path('institution_detail', {id: institution.id}) }}">
+                    {{ institution.name }}
+                </a>
+                <ul>
+                    {% for department in institution.departments %}
+                        <li>
+                            <a href="{{ path('department_detail', {id: department.id}) }}">
+                                {{ department.name }}
+                            </a>
+                            <ul>
+                                {% for instructor in department.instructors %}
+                                    <li>
+                                        <a href="{{ path('instructor_detail', {id: instructor.id}) }}">
+                                            {{ instructor.fullName }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{{ path('instructor_list') }}">Back to list</a>
+{% endblock %}

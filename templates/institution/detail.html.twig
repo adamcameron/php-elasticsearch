@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Institution Details{% endblock %}
+
+{% block body %}
+    <h1>{{ institution.name }}</h1>
+    <ul>
+        <li>ID: {{ institution.id }}</li>
+        <li>Address: {{ institution.address }}</li>
+        <li>City: {{ institution.city }}</li>
+        <li>Postal Code: {{ institution.postalCode ?? 'N/A' }}</li>
+        <li>Country: {{ institution.country }}</li>
+        <li>Established Year: {{ institution.establishedYear ?? 'N/A' }}</li>
+        <li>Type: {{ institution.type ? institution.type.value : 'N/A' }}</li>
+        <li>Website:
+            {% if institution.website %}
+                <a href="{{ institution.website }}" target="_blank">{{ institution.website }}</a>
+            {% else %}
+                N/A
+            {% endif %}
+        </li>
+    </ul>
+    <h2>Departments</h2>
+    {% if institution.departments|length > 0 %}
+        <ul>
+            {% for department in institution.departments %}
+                <li>
+                    <a href="{{ path('department_detail', {id: department.id}) }}">
+                        {{ department.name }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No departments listed.</p>
+    {% endif %}
+    <a href="{{ path('institution_list') }}">Back to list</a>
+{% endblock %}

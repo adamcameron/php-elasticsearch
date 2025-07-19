@@ -27,7 +27,14 @@ The value doesn't really matter.
 # from the root of the project
 
 # only need to do this once or if Dockerfile.base changes
-docker build -f docker/php/Dockerfile.base -t adamcameron/php-elasticsearch-base:latest .
+docker build \
+  -f docker/php/Dockerfile.base \
+  -t adamcameron/php-elasticsearch-base:x.y \ # where x.y is the actual version, e.g. 3.0 \
+  -t adamcameron/php-elasticsearch-base:latest \
+  .
+  
+docker push adamcameron/php-elasticsearch-base:x.y 
+docker push adamcameron/php-elasticsearch-base:latest  
 
 docker compose -f docker/docker-compose.yml build
 docker compose -f docker/docker-compose.yml up --detach
@@ -61,14 +68,7 @@ This presupposes appropriate Nginx and DB servers are already running
 ```bash
 # from the root of the project
 
-# only need to do this once or if Dockerfile.base changes
-docker build \
-  -f docker/php/Dockerfile.base \
-  -t adamcameron/php-elasticsearch-base:x.y \ # where x.y is the actual version, e.g. 3.0 \
-  -t adamcameron/php-elasticsearch-base:latest \
-  .
-docker push adamcameron/php-elasticsearch-base:x.y 
-docker push adamcameron/php-elasticsearch-base:latest
+# rebuild base image if it's changed (see above)
 
 # this is for the prod container
 docker build \

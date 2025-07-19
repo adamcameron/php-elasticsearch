@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Student Details{% endblock %}
+
+{% block body %}
+    <h1>{{ student.fullName }}</h1>
+    <ul>
+        <li>ID: {{ student.id }}</li>
+        <li>Department:
+            <a href="{{ path('department_detail', {id: student.department.id}) }}">
+                {{ student.department.name }}
+            </a>
+        </li>
+        <li>Email: {{ student.email }}</li>
+        <li>Date of Birth: {{ student.dateOfBirth|date('Y-m-d') }}</li>
+        <li>Gender: {{ student.gender ?? 'N/A' }}</li>
+        <li>Enrolment Year: {{ student.enrolmentYear }}</li>
+        <li>Status: {{ student.status ? student.status.label : 'N/A' }}</li>
+    </ul>
+
+    <h2>Enrolments</h2>
+    <ul>
+        {% for enrolment in student.enrolments %}
+            <li>
+                <a href="{{ path('course_detail', {id: enrolment.course.id}) }}">
+                    {{ enrolment.course.code }} &mdash; {{ enrolment.course.title }}
+                </a>
+            </li>
+        {% else %}
+            <li>No enrolments found.</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{{ path('student_list') }}">Back to list</a>
+{% endblock %}
