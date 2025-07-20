@@ -33,28 +33,16 @@ class StudentController extends AbstractController
     }
 
     #[Route('/students/{id}/view', name: 'student_view', requirements: ['id' => '\d+'])]
-    public function detail(int $id, EntityManagerInterface $em): Response
+    public function view(Student $student, EntityManagerInterface $em): Response
     {
-        $student = $em->getRepository(Student::class)->find($id);
-
-        if (!$student) {
-            throw $this->createNotFoundException('Student not found');
-        }
-
         return $this->render('student/view.html.twig', [
             'student' => $student,
         ]);
     }
 
     #[Route('/students/{id}/edit', name: 'student_edit', requirements: ['id' => '\d+'])]
-    public function edit(int $id, EntityManagerInterface $em, Request $request): Response
+    public function edit(Student $student, EntityManagerInterface $em, Request $request): Response
     {
-        $student = $em->getRepository(Student::class)->find($id);
-
-        if (!$student) {
-            throw $this->createNotFoundException('Student not found');
-        }
-
         $form = $this->createForm(StudentType::class, $student);
         $form->handleRequest($request);
 

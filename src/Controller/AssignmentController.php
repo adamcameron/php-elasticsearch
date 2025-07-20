@@ -34,28 +34,16 @@ class AssignmentController extends AbstractController
     }
 
     #[Route('/assignments/{id}/view', name: 'assignment_view', requirements: ['id' => '\d+'])]
-    public function detail(int $id, EntityManagerInterface $em): Response
+    public function view(Assignment $assignment, EntityManagerInterface $em): Response
     {
-        $assignment = $em->getRepository(Assignment::class)->find($id);
-
-        if (!$assignment) {
-            throw $this->createNotFoundException('Assignment not found');
-        }
-
         return $this->render('assignment/view.html.twig', [
             'assignment' => $assignment,
         ]);
     }
 
     #[Route('/assignments/{id}/edit', name: 'assignment_edit', requirements: ['id' => '\d+'])]
-    public function edit(int $id, EntityManagerInterface $em, Request $request): Response
+    public function edit(Assignment $assignment, EntityManagerInterface $em, Request $request): Response
     {
-        $assignment = $em->getRepository(Assignment::class)->find($id);
-
-        if (!$assignment) {
-            throw $this->createNotFoundException('Assignment not found');
-        }
-
         $form = $this->createForm(AssignmentType::class, $assignment);
         $form->handleRequest($request);
 

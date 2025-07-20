@@ -17,6 +17,15 @@
             {% endif %}
         </li>
     </ul>
+
+    <div>
+        <a href="{{ path('instructor_edit', {id: instructor.id}) }}" class="btn btn-secondary">Edit</a>
+    </div>
+
+    <div>
+        <a href="{{ path('instructor_list') }}">Back to list</a>
+    </div>
+
     <h2>Courses</h2>
     {% if instructor.courses|length > 0 %}
         <ul>
@@ -31,5 +40,4 @@
     {% else %}
         <p>No courses assigned.</p>
     {% endif %}
-    <a href="{{ path('instructor_list') }}">Back to list</a>
 {% endblock %}

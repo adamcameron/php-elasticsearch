@@ -23,9 +23,10 @@
 
     <div>
         <a href="{{ path('institution_edit', {id: institution.id}) }}" class="btn btn-secondary">Edit</a>
-
-
-    <a href="{{ path('institution_list') }}">Back to list</a>
+    </div>
+    <div>
+        <a href="{{ path('institution_list') }}">Back to list</a>
+    </div>
 
     <h2>Departments</h2>
     {% if institution.departments|length > 0 %}

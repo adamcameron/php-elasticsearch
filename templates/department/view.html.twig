@@ -16,6 +16,15 @@
         <li>Building: {{ department.building }}</li>
         <li>Contact Email: {{ department.contactEmail }}</li>
     </ul>
+
+    <div>
+        <a href="{{ path('department_edit', {id: department.id}) }}" class="btn btn-secondary">Edit</a>
+    </div>
+
+    <div>
+        <a href="{{ path('department_list') }}">Back to list</a>
+    </div>
+
     <h2>Courses</h2>
     {% if department.courses|length > 0 %}
         <ul>
@@ -44,5 +53,4 @@
     {% else %}
         <p>No instructors listed.</p>
     {% endif %}
-    <a href="{{ path('department_list') }}">Back to list</a>
 {% endblock %}

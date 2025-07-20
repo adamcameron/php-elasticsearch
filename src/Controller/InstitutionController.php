@@ -24,25 +24,15 @@ class InstitutionController extends AbstractController
     }
 
     #[Route('/institutions/{id}/view', name: 'institution_view', requirements: ['id' => '\d+'])]
-    public function detail(int $id, EntityManagerInterface $em): Response
+    public function view(Institution $institution, EntityManagerInterface $em): Response
     {
-        $institution = $em->getRepository(Institution::class)->find($id);
-
-        if (!$institution) {
-            throw $this->createNotFoundException('Institution not found');
-        }
-
         return $this->render('institution/view.html.twig', [
             'institution' => $institution,
         ]);
     }
 
     #[Route('/institutions/{id}/edit', name: 'institution_edit')]
-    public function edit(
-        Institution $institution,
-        Request $request,
-        EntityManagerInterface $em
-    ): Response {
+    public function edit(Institution $institution, EntityManagerInterface $em, Request $request): Response {
         $form = $this->createForm(InstitutionType::class, $institution);
         $form->handleRequest($request);
 
