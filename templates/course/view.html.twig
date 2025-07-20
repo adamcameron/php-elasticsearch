@@ -28,6 +28,14 @@
         <li>Description: {{ course.description }}</li>
     </ul>
 
+    <div>
+        <a href="{{ path('course_edit', {id: course.id}) }}" class="btn btn-secondary">Edit</a>
+    </div>
+
+    <div>
+        <a href="{{ path('course_list') }}">Back to list</a>
+    </div>
+
     <h2>Enrolled Students</h2>
     {% if course.enrolments|length > 0 %}
         <ul>
@@ -42,10 +50,6 @@
     {% else %}
         <p>No students enrolled.</p>
     {% endif %}
-
-    <div>
-        <a href="{{ path('course_list') }}">Back to list</a>
-    </div>
 
     <h2>Assignments</h2>
     {% if course.assignments|length > 0 %}

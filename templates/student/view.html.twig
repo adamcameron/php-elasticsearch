@@ -18,6 +18,14 @@
         <li>Status: {{ student.status ? student.status.label : 'N/A' }}</li>
     </ul>
 
+    <div>
+        <a href="{{ path('student_edit', {id: student.id}) }}" class="btn btn-secondary">Edit</a>
+    </div>
+
+    <div>
+        <a href="{{ path('student_list') }}">Back to list</a>
+    </div>
+
     <h2>Enrolments</h2>
     <ul>
         {% for enrolment in student.enrolments %}
@@ -30,6 +38,4 @@
             <li>No enrolments found.</li>
         {% endfor %}
     </ul>
-
-    <a href="{{ path('student_list') }}">Back to list</a>
 {% endblock %}
