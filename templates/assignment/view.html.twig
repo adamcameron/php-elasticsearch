@@ -8,7 +8,7 @@
         <li>ID: {{ assignment.id }}</li>
         <li>Course:
             {% if assignment.course %}
-                <a href="{{ path('course_detail', {id: assignment.course.id}) }}">
+                <a href="{{ path('course_view', {id: assignment.course.id}) }}">
                     {{ assignment.course.title }}
                 </a>
             {% else %}
@@ -17,5 +17,10 @@
         </li>
         <li>Description: {{ assignment.description }}</li>
     </ul>
-    <a href="{{ path('assignment_list') }}">Back to list</a>
+    <div>
+        <a href="{{ path('assignment_edit', {id: assignment.id}) }}" class="btn btn-secondary">Edit</a>
+    </div>
+    <div>
+        <a href="{{ path('assignment_list') }}">Back to list</a>
+    </div>
 {% endblock %}

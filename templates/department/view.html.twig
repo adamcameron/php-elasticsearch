@@ -8,7 +8,7 @@
         <li>ID: {{ department.id }}</li>
         <li>
             Institution:
-            <a href="{{ path('institution_detail', {id: department.institution.id}) }}">
+            <a href="{{ path('institution_view', {id: department.institution.id}) }}">
                 {{ department.institution.name }}
             </a>
         </li>
@@ -21,7 +21,7 @@
         <ul>
             {% for course in department.courses %}
                 <li>
-                    <a href="{{ path('course_detail', {id: course.id}) }}">
+                    <a href="{{ path('course_view', {id: course.id}) }}">
                         {{ course.title }} ({{ course.code}})
                     </a>
                 </li>
@@ -35,7 +35,7 @@
         <ul>
             {% for instructor in department.instructors %}
                 <li>
-                    <a href="{{ path('instructor_detail', {id: instructor.id}) }}">
+                    <a href="{{ path('instructor_view', {id: instructor.id}) }}">
                         {{ instructor.fullName }}
                     </a>
                 </li>

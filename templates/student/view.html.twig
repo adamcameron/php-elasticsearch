@@ -7,7 +7,7 @@
     <ul>
         <li>ID: {{ student.id }}</li>
         <li>Department:
-            <a href="{{ path('department_detail', {id: student.department.id}) }}">
+            <a href="{{ path('department_view', {id: student.department.id}) }}">
                 {{ student.department.name }}
             </a>
         </li>
@@ -22,7 +22,7 @@
     <ul>
         {% for enrolment in student.enrolments %}
             <li>
-                <a href="{{ path('course_detail', {id: enrolment.course.id}) }}">
+                <a href="{{ path('course_view', {id: enrolment.course.id}) }}">
                     {{ enrolment.course.code }} &mdash; {{ enrolment.course.title }}
                 </a>
             </li>

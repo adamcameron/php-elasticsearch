@@ -9,7 +9,7 @@
         <li>Code: {{ course.code }}</li>
         <li>Department:
             {% if course.department %}
-                <a href="{{ path('department_detail', {id: course.department.id}) }}">
+                <a href="{{ path('department_view', {id: course.department.id}) }}">
                     {{ course.department.name }}
                 </a>
             {% else %}
@@ -18,7 +18,7 @@
         </li>
         <li>Instructor:
             {% if course.instructor %}
-                <a href="{{ path('instructor_detail', {id: course.instructor.id}) }}">
+                <a href="{{ path('instructor_view', {id: course.instructor.id}) }}">
                     {{ course.instructor.fullName }}
                 </a>
             {% else %}
@@ -33,7 +33,7 @@
         <ul>
             {% for enrolment in course.enrolments %}
                 <li>
-                    <a href="{{ path('student_detail', {id: enrolment.student.id}) }}">
+                    <a href="{{ path('student_view', {id: enrolment.student.id}) }}">
                         {{ enrolment.student.fullName }}
                     </a>
                 </li>
@@ -42,5 +42,23 @@
     {% else %}
         <p>No students enrolled.</p>
     {% endif %}
-    <a href="{{ path('course_list') }}">Back to list</a>
+
+    <div>
+        <a href="{{ path('course_list') }}">Back to list</a>
+    </div>
+
+    <h2>Assignments</h2>
+    {% if course.assignments|length > 0 %}
+        <ul>
+            {% for assignment in course.assignments %}
+                <li>
+                    <a href="{{ path('assignment_view', {id: assignment.id}) }}">
+                        {{ assignment.title }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No assignments listed.</p>
+    {% endif %}
 {% endblock %}

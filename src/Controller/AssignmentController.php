@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Assignment;
 use App\Entity\Institution;
+use App\Form\AssignmentType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -31,7 +33,7 @@ class AssignmentController extends AbstractController
         ]);
     }
 
-    #[Route('/assignments/{id}', name: 'assignment_detail', requirements: ['id' => '\d+'])]
+    #[Route('/assignments/{id}/view', name: 'assignment_view', requirements: ['id' => '\d+'])]
     public function detail(int $id, EntityManagerInterface $em): Response
     {
         $assignment = $em->getRepository(Assignment::class)->find($id);
@@ -40,8 +42,31 @@ class AssignmentController extends AbstractController
             throw $this->createNotFoundException('Assignment not found');
         }
 
-        return $this->render('assignment/detail.html.twig', [
+        return $this->render('assignment/view.html.twig', [
             'assignment' => $assignment,
+        ]);
+    }
+
+    #[Route('/assignments/{id}/edit', name: 'assignment_edit', requirements: ['id' => '\d+'])]
+    public function edit(int $id, EntityManagerInterface $em, Request $request): Response
+    {
+        $assignment = $em->getRepository(Assignment::class)->find($id);
+
+        if (!$assignment) {
+            throw $this->createNotFoundException('Assignment not found');
+        }
+
+        $form = $this->createForm(AssignmentType::class, $assignment);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->flush();
+            return $this->redirectToRoute('assignment_view', ['id' => $assignment->getId()]);
+        }
+
+        return $this->render('assignment/edit.html.twig', [
+            'assignment' => $assignment,
+            'form' => $form->createView(),
         ]);
     }
 }

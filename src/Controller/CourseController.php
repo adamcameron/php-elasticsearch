@@ -29,7 +29,7 @@ class CourseController extends AbstractController
         ]);
     }
 
-    #[Route('/courses/{id}', name: 'course_detail', requirements: ['id' => '\d+'])]
+    #[Route('/courses/{id}', name: 'course_view', requirements: ['id' => '\d+'])]
     public function detail(int $id, EntityManagerInterface $em): Response
     {
         $course = $em->getRepository(Course::class)->find($id);
@@ -38,7 +38,7 @@ class CourseController extends AbstractController
             throw $this->createNotFoundException('Course not found');
         }
 
-        return $this->render('course/detail.html.twig', [
+        return $this->render('course/view.html.twig', [
             'course' => $course,
         ]);
     }

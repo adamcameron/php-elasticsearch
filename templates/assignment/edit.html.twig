@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Assignment{% endblock %}
+
+{% block body %}
+    <h1>Edit Assignment</h1>
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button class="btn btn-primary">Save</button>
+    {{ form_end(form) }}
+    <a href="{{ path('assignment_view', {id: assignment.id}) }}">Cancel</a>
+{% endblock %}

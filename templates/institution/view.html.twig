@@ -20,12 +20,19 @@
             {% endif %}
         </li>
     </ul>
+
+    <div>
+        <a href="{{ path('institution_edit', {id: institution.id}) }}" class="btn btn-secondary">Edit</a>
+
+
+    <a href="{{ path('institution_list') }}">Back to list</a>
+
     <h2>Departments</h2>
     {% if institution.departments|length > 0 %}
         <ul>
             {% for department in institution.departments %}
                 <li>
-                    <a href="{{ path('department_detail', {id: department.id}) }}">
+                    <a href="{{ path('department_view', {id: department.id}) }}">
                         {{ department.name }}
                     </a>
                 </li>
@@ -34,5 +41,4 @@
     {% else %}
         <p>No departments listed.</p>
     {% endif %}
-    <a href="{{ path('institution_list') }}">Back to list</a>
 {% endblock %}

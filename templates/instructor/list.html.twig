@@ -7,19 +7,19 @@
     <ul>
         {% for institution in institutions %}
             <li>
-                <a href="{{ path('institution_detail', {id: institution.id}) }}">
+                <a href="{{ path('institution_view', {id: institution.id}) }}">
                     {{ institution.name }}
                 </a>
                 <ul>
                     {% for department in institution.departments %}
                         <li>
-                            <a href="{{ path('department_detail', {id: department.id}) }}">
+                            <a href="{{ path('department_view', {id: department.id}) }}">
                                 {{ department.name }}
                             </a>
                             <ul>
                                 {% for instructor in department.instructors %}
                                     <li>
-                                        <a href="{{ path('instructor_detail', {id: instructor.id}) }}">
+                                        <a href="{{ path('instructor_view', {id: instructor.id}) }}">
                                             {{ instructor.fullName }}
                                         </a>
                                     </li>

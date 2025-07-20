@@ -7,7 +7,7 @@
     <ul>
         {% for institution in institutions %}
             <li>
-                <a href="{{ path('institution_detail', {id: institution.id}) }}">
+                <a href="{{ path('institution_view', {id: institution.id}) }}">
                     {{ institution.name }}
                 </a>
             </li>

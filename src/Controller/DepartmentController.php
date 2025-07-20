@@ -20,10 +20,10 @@ class DepartmentController extends AbstractController
         ]);
     }
 
-    #[Route('/departments/{id}', name: 'department_detail')]
+    #[Route('/departments/{id}', name: 'department_view')]
     public function detail(Department $department): Response
     {
-        return $this->render('department/detail.html.twig', [
+        return $this->render('department/view.html.twig', [
             'department' => $department,
         ]);
     }

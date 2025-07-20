@@ -29,7 +29,7 @@ class InstructorController extends AbstractController
         ]);
     }
 
-    #[Route('/instructors/{id}', name: 'instructor_detail', requirements: ['id' => '\d+'])]
+    #[Route('/instructors/{id}', name: 'instructor_view', requirements: ['id' => '\d+'])]
     public function detail(int $id, EntityManagerInterface $em): Response
     {
         $instructor = $em->getRepository(Instructor::class)->find($id);
@@ -38,7 +38,7 @@ class InstructorController extends AbstractController
             throw $this->createNotFoundException('Instructor not found');
         }
 
-        return $this->render('instructor/detail.html.twig', [
+        return $this->render('instructor/view.html.twig', [
             'instructor' => $instructor,
         ]);
     }

@@ -9,7 +9,7 @@
         <li>Email: {{ instructor.email }}</li>
         <li>Department:
             {% if instructor.department %}
-                <a href="{{ path('department_detail', {id: instructor.department.id}) }}">
+                <a href="{{ path('department_view', {id: instructor.department.id}) }}">
                     {{ instructor.department.name }}
                 </a>
             {% else %}
@@ -22,7 +22,7 @@
         <ul>
             {% for course in instructor.courses %}
                 <li>
-                    <a href="{{ path('course_detail', {id: course.id}) }}">
+                    <a href="{{ path('course_view', {id: course.id}) }}">
                         {{ course.title }} ({{ course.code }})
                     </a>
                 </li>

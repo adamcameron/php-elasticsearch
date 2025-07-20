@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Institution;
+use App\Form\InstitutionType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -21,7 +23,7 @@ class InstitutionController extends AbstractController
         ]);
     }
 
-    #[Route('/institutions/{id}', name: 'institution_detail', requirements: ['id' => '\d+'])]
+    #[Route('/institutions/{id}/view', name: 'institution_view', requirements: ['id' => '\d+'])]
     public function detail(int $id, EntityManagerInterface $em): Response
     {
         $institution = $em->getRepository(Institution::class)->find($id);
@@ -30,7 +32,27 @@ class InstitutionController extends AbstractController
             throw $this->createNotFoundException('Institution not found');
         }
 
-        return $this->render('institution/detail.html.twig', [
+        return $this->render('institution/view.html.twig', [
+            'institution' => $institution,
+        ]);
+    }
+
+    #[Route('/institutions/{id}/edit', name: 'institution_edit')]
+    public function edit(
+        Institution $institution,
+        Request $request,
+        EntityManagerInterface $em
+    ): Response {
+        $form = $this->createForm(InstitutionType::class, $institution);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->flush();
+            return $this->redirectToRoute('institution_view', ['id' => $institution->getId()]);
+        }
+
+        return $this->render('institution/edit.html.twig', [
+            'form' => $form->createView(),
             'institution' => $institution,
         ]);
     }
