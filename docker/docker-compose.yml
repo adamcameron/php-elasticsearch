@@ -63,7 +63,29 @@ services:
       MARIADB_PASSWORD_FILE: /run/secrets/mariadb_password
       MARIADB_ROOT_PASSWORD_FILE: /run/secrets/mariadb_root_password
 
+  elasticsearch:
+    container_name: elasticsearch
+
+    image: elasticsearch:9.0.3
+
+    environment:
+      - discovery.type=single-node
+      - network.host=0.0.0.0
+      - xpack.security.enabled=false
+      - xpack.security.http.ssl.enabled=false
+
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+
+    stdin_open: true
+    tty: true
+
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+
 volumes:
+  elasticsearch-data:
   mariadb-data:
 
 secrets:
@@ -73,3 +95,5 @@ secrets:
     file: mariadb/mariadb_password_file.private
   mariadb_root_password:
     file: mariadb/mariadb_root_password_file.private
+  elasticsearch_password:
+    file: elasticsearch/elasticsearch_password_file.private

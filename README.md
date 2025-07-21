@@ -59,6 +59,27 @@ OK (10 tests, 25 assertions)
 
 Generating code coverage report in HTML format ... done [00:00.006]
 ```
+Generating test data:
+
+```
+docker exec -it php php -d memory_limit=2G bin/console doctrine:fixtures:load --append
+```
+
+Data volumes can be controlled via `tests/Fixtures/FixtureLimits.php`.
+Note that it's fairly resource intensive (the statement above requires giving PHP 2GB of memory...)
+
+This generates data volume as follows:
+
+| Entity       | Count   |
+|--------------|---------|
+| institution  | 100     |
+| department   | 990     |
+| course       | 7515    |
+| instructor   | 9739    |
+| assignment   | 22719   |
+| enrolment    | 118112  |
+| student      | 29528   |
+
 
 ## Building PHP container for prod
 

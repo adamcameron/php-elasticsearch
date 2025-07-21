@@ -1,13 +1,13 @@
 <?php
 
-namespace docker;
+namespace App\Tests\Integration\System;
 
 use App\Tests\Integration\Fixtures\Database as DB;
 use PHPUnit\Framework\Attributes\TestDox;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 #[TestDox('Tests Database objects')]
-class ConnectionTest extends KernelTestCase
+class DbConnectionTest extends KernelTestCase
 {
     #[TestDox('It can connect using the raw DB connection values')]
     public function testPdoCanConnectToTheDatabase(): void

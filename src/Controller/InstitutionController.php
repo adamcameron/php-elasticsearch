@@ -16,7 +16,8 @@ class InstitutionController extends AbstractController
     public function list(EntityManagerInterface $em): Response
     {
         $institutions = $em
-            ->getRepository(Institution::class)->findBy([], ['name' => 'ASC']);
+            ->getRepository(Institution::class)
+            ->findBy([], ['name' => 'ASC']);
 
         return $this->render('institution/list.html.twig', [
             'institutions' => $institutions,

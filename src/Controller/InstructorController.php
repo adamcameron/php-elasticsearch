@@ -16,7 +16,8 @@ class InstructorController extends AbstractController
     #[Route('/instructors', name: 'instructor_list')]
     public function list(EntityManagerInterface $em): Response
     {
-        $institutions = $em->getRepository(Institution::class)
+        $institutions = $em
+            ->getRepository(Institution::class)
             ->createQueryBuilder('i')
             ->leftJoin('i.departments', 'd')
             ->addSelect('d')

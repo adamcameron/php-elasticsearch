@@ -12,7 +12,8 @@ class InstructorFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-        $departmentIds = $manager->getRepository(Department::class)
+        $departmentIds = $manager
+            ->getRepository(Department::class)
             ->createQueryBuilder('d')
             ->select('d.id')
             ->getQuery()

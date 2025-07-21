@@ -16,7 +16,8 @@ class AssignmentController extends AbstractController
     #[Route('/assignments', name: 'assignment_list')]
     public function list(EntityManagerInterface $em): Response
     {
-        $institutions = $em->getRepository(Institution::class)
+        $institutions = $em
+            ->getRepository(Institution::class)
             ->createQueryBuilder('i')
             ->leftJoin('i.departments', 'd')
             ->addSelect('d')

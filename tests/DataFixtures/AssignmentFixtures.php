@@ -12,7 +12,8 @@ class AssignmentFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-        $courseIds = $manager->getRepository(Course::class)
+        $courseIds = $manager
+            ->getRepository(Course::class)
             ->createQueryBuilder('c')
             ->select('c.id')
             ->getQuery()
