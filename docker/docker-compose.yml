@@ -21,7 +21,8 @@ services:
       dockerfile: Dockerfile.dev
 
     env_file:
-      - envVars.public
+      - mariadb/envVars.public
+      - elasticsearch/envVars.public
       - php/envVars.public
       - php/envVars.dev.public
 
@@ -44,7 +45,7 @@ services:
       dockerfile: Dockerfile
 
     env_file:
-      - envVars.public
+      - mariadb/envVars.public
 
     ports:
       - "3380:3306"
@@ -83,6 +84,13 @@ services:
 
     volumes:
       - elasticsearch-data:/usr/share/elasticsearch/data
+
+    healthcheck:
+      test: [ "CMD", "curl", "-fs", "http://localhost:9200/_cluster/health" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
 
 volumes:
   elasticsearch-data:

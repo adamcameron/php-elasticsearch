@@ -24,6 +24,8 @@ class EnvironmentTest extends TestCase
             'MARIADB_HOST',
             'MARIADB_PORT',
             'MARIADB_USER',
+            'ELASTICSEARCH_HOST',
+            'ELASTICSEARCH_PORT',
         ];
 
         foreach ($varNames as $varName) {
