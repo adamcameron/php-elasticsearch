@@ -9,12 +9,12 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: InstitutionRepository::class)]
-class Institution
+class Institution extends AbstractSyncableToElasticsearch
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    protected ?int $id = null;
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
@@ -181,5 +181,19 @@ class Institution
         }
 
         return $this;
+    }
+
+    public function toElasticsearchArray(): array
+    {
+        return [
+            'name' => $this->name,
+            'address' => $this->address,
+            'city' => $this->city,
+            'postalCode' => $this->postalCode,
+            'country' => $this->country,
+            'establishedYear' => $this->establishedYear,
+            'type' => $this->type?->label(),
+            'website' => $this->website,
+        ];
     }
 }

@@ -8,12 +8,12 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: DepartmentRepository::class)]
-class Department
+class Department extends AbstractSyncableToElasticsearch
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    protected ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'departments')]
     #[ORM\JoinColumn(nullable: false)]
@@ -212,5 +212,15 @@ class Department
         }
 
         return $this;
+    }
+
+    public function toElasticsearchArray(): array
+    {
+        return [
+            'name' => $this->name,
+            'headOfDepartment' => $this->headOfDepartment,
+            'building' => $this->building,
+            'contactEmail' => $this->contactEmail,
+        ];
     }
 }

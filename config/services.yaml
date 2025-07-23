@@ -16,6 +16,11 @@ services:
       $username: '%env(MARIADB_USER)%'
       $password: '%env(MARIADB_PASSWORD)%'
 
+  Elastic\Elasticsearch\Client:
+    factory: ['Elastic\Elasticsearch\ClientBuilder', 'fromConfig']
+    arguments:
+      - { hosts: ['%env(ELASTICSEARCH_HOST)%:%env(ELASTICSEARCH_PORT)%'] }
+
 when@dev:
   services:
     App\Tests\DataFixtures\:

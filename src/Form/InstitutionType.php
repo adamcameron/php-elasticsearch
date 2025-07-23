@@ -2,7 +2,6 @@
 
 namespace App\Form;
 
-use App\Entity\Institution;
 use App\Enum\InstitutionType as InstitutionTypeEnum;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -27,9 +26,9 @@ class InstitutionType extends AbstractType
                     array_map(fn($type) => $type->label(), InstitutionTypeEnum::cases()),
                     InstitutionTypeEnum::cases()
                 ),
-                'choice_label' => false,
+                'choice_label' => fn(InstitutionTypeEnum $type) => $type->label(),
                 'choice_value' => fn (?InstitutionTypeEnum $type) => $type?->value,
-                'required' => false,
+                'required' => true,
             ]);
     }
 }

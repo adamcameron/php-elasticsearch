@@ -10,12 +10,12 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: StudentRepository::class)]
-class Student
+class Student extends AbstractSyncableToElasticsearch
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    protected ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'students')]
     #[ORM\JoinColumn(nullable: false)]
@@ -167,5 +167,17 @@ class Student
         }
 
         return $this;
+    }
+
+    public function toElasticsearchArray(): array
+    {
+        return [
+            'email' => $this->email,
+            'fullName' => $this->fullName,
+            'dateOfBirth' => $this->dateOfBirth?->format('Y-m-d'),
+            'gender' => $this->gender,
+            'enrolmentYear' => $this->enrolmentYear,
+            'status' => $this->status?->label(),
+        ];
     }
 }

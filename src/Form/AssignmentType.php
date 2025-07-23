@@ -17,7 +17,7 @@ class AssignmentType extends AbstractType
     {
         $builder
             ->add('title', TextType::class)
-            ->add('description', TextareaType::class)
+            ->add('description', TextareaType::class, ['attr' => ['rows' => 5, 'cols' => 50]])
             ->add('course', EntityType::class, [
                 'class' => Course::class,
                 'choice_label' => 'title',
