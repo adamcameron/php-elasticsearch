@@ -8,9 +8,7 @@ use App\Entity\Instructor;
 use App\Entity\Institution;
 use App\Entity\Student;
 use App\Entity\Assignment;
-use App\Entity\SyncableToElasticsearch;
 use App\EventListener\SearchIndexer;
-use App\Service\ElasticsearchAdapter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -35,9 +33,8 @@ class ReindexSearchCommand extends Command
     ];
 
     public function __construct(
-        private EntityManagerInterface $em,
-        private SearchIndexer $indexer,
-        private UrlGeneratorInterface $urlGenerator
+        private readonly EntityManagerInterface $em,
+        private readonly SearchIndexer $indexer
     ) {
         parent::__construct();
     }

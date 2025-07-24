@@ -6,7 +6,7 @@ use Elastic\Elasticsearch\Client;
 
 class ElasticsearchTestIndexManager
 {
-    private const string INDEX = 'search_index';
+    public const string INDEX = 'test_index';
 
     private Client $client;
 

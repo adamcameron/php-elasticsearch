@@ -15,8 +15,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class SearchIndexer
 {
     public function __construct(
-        private ElasticsearchAdapter $adapter,
-        private UrlGeneratorInterface $urlGenerator
+        private readonly ElasticsearchAdapter $adapter,
+        private readonly UrlGeneratorInterface $urlGenerator
     ) {}
 
     public function postPersist(PostPersistEventArgs $args): void
