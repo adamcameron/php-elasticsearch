@@ -6,10 +6,9 @@ RUN ["apt-get", "install", "-y", "zip", "unzip", "git", "vim"]
 RUN echo "alias ll='ls -alF'" >> ~/.bashrc
 RUN echo "alias cls='clear; printf \"\033[3J\"'" >> ~/.bashrc
 
-COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
-
-COPY docker/php/usr/local/etc/php/conf.d/error_reporting.ini /usr/local/etc/php/conf.d/error_reporting.ini
-COPY docker/php/usr/local/etc/php/conf.d/app.ini /usr/local/etc/php/conf.d/app.ini
+RUN cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
+COPY usr/local/etc/php/conf.d/error_reporting.ini /usr/local/etc/php/conf.d/error_reporting.ini
+COPY usr/local/etc/php/conf.d/app.ini /usr/local/etc/php/conf.d/app.ini
 
 RUN apt-get install -y libicu-dev && docker-php-ext-configure intl && docker-php-ext-install intl
 
@@ -23,12 +22,20 @@ RUN docker-php-ext-configure zip && docker-php-ext-install zip
 RUN docker-php-ext-configure pdo_mysql && docker-php-ext-install pdo_mysql
 RUN docker-php-ext-configure opcache && docker-php-ext-install opcache
 
+RUN pecl install xdebug && docker-php-ext-enable xdebug
+COPY usr/local/etc/php/conf.d/xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+
+COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
+
 RUN curl -1sLf 'https://dl.cloudsmith.io/public/symfony/stable/setup.deb.sh' | bash
 RUN ["apt-get", "install", "-y", "symfony-cli"]
 
 # need to use 777 as both php-fpm and php-cli will write to these directories
 RUN mkdir -p /var/cache/symfony && chown www-data:www-data /var/cache/symfony && chmod 777 /var/cache/symfony
+RUN mkdir -p /var/cache/symfony/dev && chown www-data:www-data /var/cache/symfony/dev && chmod 777 /var/cache/symfony/dev
 RUN mkdir -p /var/log/symfony && chown www-data:www-data /var/log/symfony && chmod 777 /var/log/symfony
+
+RUN git config --global --add safe.directory /var/www
 
 HEALTHCHECK \
     --start-period=30s \
@@ -40,7 +47,7 @@ HEALTHCHECK \
 WORKDIR /var/www
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
-RUN mkdir public && chown www-data:www-data public && chmod 775 public
-COPY bin/ bin/
-COPY .env .env
-COPY src/Kernel.php src/Kernel.php
+COPY --chmod=755 usr/local/bin/entrypoint.sh /usr/local/bin/
+ENTRYPOINT ["entrypoint.sh"]
+
+EXPOSE 9000

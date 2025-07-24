@@ -26,36 +26,27 @@ The value doesn't really matter.
 ```bash
 # from the root of the project
 
-# only need to do this once or if Dockerfile.base changes
-docker build \
-  -f docker/php/Dockerfile.base \
-  -t adamcameron/php-elasticsearch-base:x.y \ # where x.y is the actual version, e.g. 3.0 \
-  -t adamcameron/php-elasticsearch-base:latest \
-  .
-  
-docker push adamcameron/php-elasticsearch-base:x.y 
-docker push adamcameron/php-elasticsearch-base:latest  
-
 docker compose -f docker/docker-compose.yml build
 docker compose -f docker/docker-compose.yml up --detach
 
 # verify stability
 docker container ls --format "table {{.Names}}\t{{.Status}}"
-NAMES     STATUS
-php       Up 15 seconds (healthy)
-nginx     Up 15 seconds (healthy)
-db        Up 15 seconds (healthy)
+NAMES           STATUS
+php             Up 2 minutes (healthy)
+db              Up 2 minutes (healthy)
+nginx           Up 2 minutes (healthy)
+elasticsearch   Up 2 minutes (healthy)
 
 docker exec php composer test-all
 ./composer.json is valid
 PHPUnit 12.2.7 by Sebastian Bergmann and contributors.
 
-Runtime:       PHP 8.4.10 with Xdebug 3.4.4
+Runtime:       PHP 8.4.10 with Xdebug 3.4.5
 Configuration: /var/www/phpunit.xml.dist
 
 Time: 00:02.270, Memory: 28.00 MB
 
-OK (10 tests, 25 assertions)
+OK (16 tests, 34 assertions)
 
 Generating code coverage report in HTML format ... done [00:00.006]
 ```
@@ -80,27 +71,27 @@ This generates data volume as follows:
 | enrolment    | 118112  |
 | student      | 29528   |
 
-
-## Building PHP container for prod
-
-This presupposes appropriate Nginx and DB servers are already running
-(the dev containers would be fine).
+One can reindex the data in ElasticSearch by running:
 
 ```bash
-# from the root of the project
-
-# rebuild base image if it's changed (see above)
-
-# this is for the prod container
-docker build \
-    -f docker/php/Dockerfile.prod \
-    -t adamcameron/php-elasticsearch:x.y \ # where x.y is the actual version, e.g. 0.6 \
-    -t adamcameron/php-elasticsearch:latest \
-    .
-
-docker push adamcameron/php-elasticsearch:x.y
-docker push adamcameron/php-elasticsearch:latest
+docker exec php php bin/console search:reindex all
 ```
+
+The command also takes individual entity names, e.g. `course`, `instructor`, etc:
+```bash
+docker exec php php bin/console search:reindex course
+```
+
+## Endpoints
+
+Data-view UI can be entered via `http://localhost:8080/institutions`.
+All entities can be viewed and searched there, via drilling down.
+
+All entities can be edited, but only students can be added
+(via the course detail page: `http://localhost:8080/courses/{id}/view`).
+
+Searching can be tested via `http://localhost:8080/search`.
+
 
 ## Changes
 

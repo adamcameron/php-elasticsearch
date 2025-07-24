@@ -18,13 +18,12 @@ services:
     container_name: php
     build:
       context: php
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
 
     env_file:
       - mariadb/envVars.public
       - elasticsearch/envVars.public
       - php/envVars.public
-      - php/envVars.dev.public
 
     ports:
       - "9000:9000"
