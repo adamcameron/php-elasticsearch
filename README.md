@@ -96,3 +96,5 @@ Searching can be tested via `http://localhost:8080/search`.
 ## Changes
 
 0.1 - Baseline setup copied from php8-swarm, with Docker Swarm and Redis stuff removed
+
+0.2 - Added ElasticSearch integration, with basic search functionality
