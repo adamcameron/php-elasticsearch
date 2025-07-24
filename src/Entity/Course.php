@@ -186,4 +186,9 @@ class Course extends AbstractSyncableToElasticsearch
             'description' => $this->description
         ];
     }
+
+    public function getSearchTitle(): string
+    {
+        return sprintf('%s (%s)', $this->title, $this->code);
+    }
 }

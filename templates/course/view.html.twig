@@ -37,6 +37,9 @@
     </div>
 
     <h2>Enrolled Students</h2>
+
+    <a href="{{ path('student_add', {id: course.id}) }}" class="btn btn-primary">Add Student</a>
+
     {% if course.enrolments|length > 0 %}
         <ul>
             {% for enrolment in course.enrolments %}

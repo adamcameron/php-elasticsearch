@@ -73,4 +73,9 @@ class Assignment extends AbstractSyncableToElasticsearch
             'course' => $this->course?->getTitle(),
         ];
     }
+
+    public function getSearchTitle(): string
+    {
+        return $this->title;
+    }
 }

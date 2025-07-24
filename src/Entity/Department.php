@@ -223,4 +223,9 @@ class Department extends AbstractSyncableToElasticsearch
             'contactEmail' => $this->contactEmail,
         ];
     }
+
+    public function getSearchTitle(): string
+    {
+        return $this->name;
+    }
 }

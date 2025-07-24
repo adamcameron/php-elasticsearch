@@ -196,4 +196,9 @@ class Institution extends AbstractSyncableToElasticsearch
             'website' => $this->website,
         ];
     }
+
+    public function getSearchTitle(): string
+    {
+        return $this->name;
+    }
 }

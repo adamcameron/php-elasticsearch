@@ -1,0 +1,19 @@
+<form method="get" action="{{ path('search') }}">
+    <input type="text" name="q" value="{{ query|e }}" placeholder="Search...">
+    <button type="submit">Search</button>
+</form>
+
+{% if results is not empty %}
+    <ul>
+        {% for hit in results %}
+            {% set doc = hit._source %}
+            <li>
+                <a href="{{ doc._meta.url }}">
+                    [{{ doc._meta.type }}] {{ doc._meta.title ?? '[no title]' }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% elseif query %}
+    <p>No results found.</p>
+{% endif %}

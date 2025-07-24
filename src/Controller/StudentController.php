@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Course;
+use App\Entity\Department;
+use App\Entity\Enrolment;
 use App\Entity\Student;
 use App\Form\StudentType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -54,6 +57,36 @@ class StudentController extends AbstractController
         return $this->render('student/edit.html.twig', [
             'student' => $student,
             'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/courses/{id}/students/add', name: 'student_add')]
+    public function add(
+        Course $course,
+        EntityManagerInterface $em,
+        Request $request
+    ): Response {
+        $student = new Student();
+        $student->setDepartment($course->getDepartment());
+
+        $form = $this->createForm(StudentType::class, $student);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($student);
+
+            $enrolment = new Enrolment();
+            $enrolment->setStudent($student);
+            $enrolment->setCourse($course);
+            $em->persist($enrolment);
+
+            $em->flush();
+            return $this->redirectToRoute('course_view', ['id' => $course->getId()]);
+        }
+
+        return $this->render('student/add.html.twig', [
+            'form' => $form->createView(),
+            'course' => $course,
         ]);
     }
 

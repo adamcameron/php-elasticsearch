@@ -180,4 +180,9 @@ class Student extends AbstractSyncableToElasticsearch
             'status' => $this->status?->label(),
         ];
     }
+
+    public function getSearchTitle(): string
+    {
+        return $this->fullName;
+    }
 }

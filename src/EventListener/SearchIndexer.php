@@ -29,7 +29,7 @@ class SearchIndexer
         $this->sync($args->getObject());
     }
 
-    private function sync(object $entity): void
+    public function sync(object $entity): void
     {
         if (!$entity instanceof SyncableToElasticsearch) {
             return;
@@ -38,6 +38,7 @@ class SearchIndexer
         $doc = $entity->toElasticsearchDocument();
         $doc['body']['_meta'] = [
             'type' => $entity->getShortName(),
+            'title' => $entity->getSearchTitle(),
             'url' => $this->urlGenerator->generate(
                 $entity->getShortName() . '_view',
                 ['id' => $entity->getId()]

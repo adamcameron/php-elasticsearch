@@ -39,4 +39,20 @@ class ElasticsearchAdapter
             'id'    => $id,
         ]);
     }
+
+    public function searchByString(string $query): array
+    {
+        $body = [
+            'query' => [
+                'query_string' => [
+                    'query' => $query,
+                ],
+            ],
+        ];
+        $response = $this->client->search([
+            'index' => self::INDEX,
+            'body'  => $body,
+        ]);
+        return $response['hits']['hits'] ?? [];
+    }
 }

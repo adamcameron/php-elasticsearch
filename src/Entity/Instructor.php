@@ -111,9 +111,14 @@ class Instructor extends AbstractSyncableToElasticsearch
     public function toElasticsearchArray(): array
     {
         return [
-            'fullName' => $this->getFullName(),
-            'email' => $this->getEmail(),
-            'department' => $this->getDepartment()?->getName(),
+            'fullName' => $this->fullName,
+            'email' => $this->email,
+            'department' => $this->department?->getName(),
         ];
+    }
+
+    public function getSearchTitle(): string
+    {
+        return $this->fullName;
     }
 }
