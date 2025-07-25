@@ -7,11 +7,13 @@ use App\Service\ElasticsearchAdapter;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Event\PostPersistEventArgs;
 use Doctrine\ORM\Event\PostUpdateEventArgs;
+use Doctrine\ORM\Event\PreRemoveEventArgs;
 use Doctrine\ORM\Events;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 #[AsDoctrineListener(event: Events::postPersist, priority: 500, connection: 'default')]
 #[AsDoctrineListener(event: Events::postUpdate, priority: 500, connection: 'default')]
+#[AsDoctrineListener(event: Events::preRemove, priority: 500, connection: 'default')]
 class SearchIndexer
 {
     public function __construct(
@@ -27,6 +29,16 @@ class SearchIndexer
     public function postUpdate(PostUpdateEventArgs  $args): void
     {
         $this->sync($args->getObject());
+    }
+
+    public function preRemove(PreRemoveEventArgs $args): void
+    {
+        $entity = $args->getObject();
+        if (!$entity instanceof SyncableToElasticsearch) {
+            return;
+        }
+
+        $this->adapter->deleteDocument($entity->getElasticsearchId());
     }
 
     public function sync(object $entity): void

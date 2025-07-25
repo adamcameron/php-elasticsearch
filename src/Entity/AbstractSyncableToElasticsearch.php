@@ -16,7 +16,7 @@ abstract class AbstractSyncableToElasticsearch implements SyncableToElasticsearc
         ];
     }
 
-    protected function getElasticsearchId(): string
+    public function getElasticsearchId(): string
     {
         $entityType = $this->getShortName();
         return $entityType . '_' . $this->id;

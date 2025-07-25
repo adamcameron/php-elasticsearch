@@ -89,5 +89,16 @@ class StudentController extends AbstractController
             'course' => $course,
         ]);
     }
+    #[Route('/students/{id}/delete', name: 'student_delete', requirements: ['id' => '\d+'])]
+    public function delete(Student $student, EntityManagerInterface $em): Response
+    {
+        foreach ($student->getEnrolments() as $enrolment) {
+            $em->remove($enrolment);
+        }
 
+        $em->remove($student);
+        $em->flush();
+
+        return $this->redirectToRoute('student_list');
+    }
 }

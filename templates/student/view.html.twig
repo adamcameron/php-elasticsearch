@@ -20,6 +20,11 @@
 
     <div>
         <a href="{{ path('student_edit', {id: student.id}) }}" class="btn btn-secondary">Edit</a>
+        <a
+            href="{{ path('student_delete', {id: student.id}) }}"
+            class="btn btn-danger"
+            onclick="return confirm('Are you sure you want to delete this student?');"
+        >Delete</a>
     </div>
 
     <div>
