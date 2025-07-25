@@ -7,9 +7,10 @@ use App\Repository\InstitutionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 
 #[ORM\Entity(repositoryClass: InstitutionRepository::class)]
-class Institution extends AbstractSyncableToElasticsearch
+class Institution extends AbstractSyncableToElasticsearch implements JsonSerializable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -200,5 +201,20 @@ class Institution extends AbstractSyncableToElasticsearch
     public function getSearchTitle(): string
     {
         return $this->name;
+    }
+
+    public function jsonSerialize(): mixed
+    {
+       return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'address' => $this->address,
+            'city' => $this->city,
+            'postalCode' => $this->postalCode,
+            'country' => $this->country,
+            'establishedYear' => $this->establishedYear,
+            'type' => $this->type?->value,
+            'website' => $this->website,
+        ];
     }
 }

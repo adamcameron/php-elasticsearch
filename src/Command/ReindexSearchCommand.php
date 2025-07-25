@@ -8,14 +8,13 @@ use App\Entity\Instructor;
 use App\Entity\Institution;
 use App\Entity\Student;
 use App\Entity\Assignment;
-use App\EventListener\SearchIndexer;
+use App\Service\ElasticSearchIndexerService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 #[AsCommand(
     name: 'search:reindex',
@@ -34,7 +33,7 @@ class ReindexSearchCommand extends Command
 
     public function __construct(
         private readonly EntityManagerInterface $em,
-        private readonly SearchIndexer $indexer
+        private readonly ElasticSearchIndexerService $indexerService
     ) {
         parent::__construct();
     }
@@ -89,7 +88,7 @@ class ReindexSearchCommand extends Command
             $results = $qb->getQuery()->getResult();
 
             foreach ($results as $entity) {
-                $this->indexer->sync($entity);
+                $this->indexerService->sync($entity);
             }
 
             $this->em->clear();

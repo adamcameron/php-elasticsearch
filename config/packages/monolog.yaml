@@ -1,0 +1,10 @@
+monolog:
+  channels:
+    - messaging
+
+  handlers:
+    messaging:
+      type: stream
+      path: '%kernel.logs_dir%/messaging.log'
+      level: debug
+      channels: ['messaging']
