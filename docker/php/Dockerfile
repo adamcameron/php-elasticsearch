@@ -1,14 +1,14 @@
 FROM php:8.4.10-fpm-bookworm
 
 RUN ["apt-get", "update"]
-RUN ["apt-get", "install", "-y", "zip", "unzip", "git", "vim"]
+RUN ["apt-get", "install", "-y", "zip", "unzip", "git", "vim", "procps"]
 
 RUN echo "alias ll='ls -alF'" >> ~/.bashrc
 RUN echo "alias cls='clear; printf \"\033[3J\"'" >> ~/.bashrc
 
 RUN cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
-COPY usr/local/etc/php/conf.d/error_reporting.ini /usr/local/etc/php/conf.d/error_reporting.ini
-COPY usr/local/etc/php/conf.d/app.ini /usr/local/etc/php/conf.d/app.ini
+COPY docker/php/usr/local/etc/php/conf.d/error_reporting.ini /usr/local/etc/php/conf.d/error_reporting.ini
+COPY docker/php/usr/local/etc/php/conf.d/app.ini /usr/local/etc/php/conf.d/app.ini
 
 RUN apt-get install -y libicu-dev && docker-php-ext-configure intl && docker-php-ext-install intl
 
@@ -16,14 +16,18 @@ RUN [ \
     "apt-get", "install", "-y",  \
     "libz-dev", \
     "libzip-dev", \
-    "libfcgi0ldbl" \
+    "libfcgi0ldbl", \
+    "librabbitmq-dev" \
 ]
 RUN docker-php-ext-configure zip && docker-php-ext-install zip
 RUN docker-php-ext-configure pdo_mysql && docker-php-ext-install pdo_mysql
 RUN docker-php-ext-configure opcache && docker-php-ext-install opcache
 
+RUN pecl install amqp
+RUN docker-php-ext-enable amqp
+
 RUN pecl install xdebug && docker-php-ext-enable xdebug
-COPY usr/local/etc/php/conf.d/xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+COPY docker/php/usr/local/etc/php/conf.d/xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
@@ -35,6 +39,12 @@ RUN mkdir -p /var/cache/symfony && chown www-data:www-data /var/cache/symfony &&
 RUN mkdir -p /var/cache/symfony/dev && chown www-data:www-data /var/cache/symfony/dev && chmod 777 /var/cache/symfony/dev
 RUN mkdir -p /var/log/symfony && chown www-data:www-data /var/log/symfony && chmod 777 /var/log/symfony
 
+WORKDIR /tmp/composer
+COPY composer.json composer.lock /tmp/composer/
+ENV COMPOSER_ALLOW_SUPERUSER=1
+RUN composer install --no-interaction --prefer-dist --no-scripts
+
+WORKDIR /var/www
 RUN git config --global --add safe.directory /var/www
 
 HEALTHCHECK \
@@ -44,10 +54,7 @@ HEALTHCHECK \
     --retries=3 \
     CMD SCRIPT_FILENAME=/var/www/bin/healthCheck.php REQUEST_METHOD=GET cgi-fcgi -bind -connect localhost:9000 | grep 'pong' || exit 1
 
-WORKDIR /var/www
-ENV COMPOSER_ALLOW_SUPERUSER=1
-
-COPY --chmod=755 usr/local/bin/entrypoint.sh /usr/local/bin/
-ENTRYPOINT ["entrypoint.sh"]
+COPY --chmod=755 docker/php/usr/local/bin/entrypoint-web.sh /usr/local/bin/
+COPY --chmod=755 docker/php/usr/local/bin/entrypoint-worker.sh /usr/local/bin/
 
 EXPOSE 9000

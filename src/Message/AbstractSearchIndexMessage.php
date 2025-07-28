@@ -7,11 +7,11 @@ use Doctrine\Persistence\Event\LifecycleEventArgs;
 abstract class AbstractSearchIndexMessage
 {
     public function __construct(
-        private readonly LifecycleEventArgs $args
+        private readonly object $args
     )
     { }
 
-    public function getArgs(): LifecycleEventArgs
+    public function getArgs(): object
     {
         return $this->args;
     }

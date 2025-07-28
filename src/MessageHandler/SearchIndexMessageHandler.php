@@ -18,18 +18,18 @@ class SearchIndexMessageHandler
     #[AsMessageHandler]
     public function handleAdd(SearchIndexAddMessage $message): void
     {
-        $this->searchIndexer->sync($message->getArgs()->getObject());
+        $this->searchIndexer->sync($message->getArgs());
     }
 
     #[AsMessageHandler]
     public function handleUpdate(SearchIndexUpdateMessage $message): void
     {
-        $this->searchIndexer->sync($message->getArgs()->getObject());
+        $this->searchIndexer->sync($message->getArgs());
     }
 
     #[AsMessageHandler]
     public function handleRemove(SearchIndexDeleteMessage $message): void
     {
-        $this->searchIndexer->delete($message->getArgs()->getObject());
+        $this->searchIndexer->delete($message->getArgs());
     }
 }

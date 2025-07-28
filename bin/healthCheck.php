@@ -1,3 +1,5 @@
 <?php
 
-echo implode('', ['p', 'o', 'n', 'g']);
+if (file_exists('/var/www/vendor/up.dat')) {
+    echo 'pong';
+}

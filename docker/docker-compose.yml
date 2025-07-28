@@ -14,11 +14,14 @@ services:
     volumes:
       - ../public:/usr/share/nginx/html/
 
-  php:
-    container_name: php
+    extra_hosts:
+      - host.docker.internal:host-gateway
+
+  php-web:
+    container_name: php-web
     build:
-      context: php
-      dockerfile: Dockerfile
+      context: ..
+      dockerfile: docker/php/Dockerfile
 
     env_file:
       - mariadb/envVars.public
@@ -34,8 +37,49 @@ services:
     volumes:
       - ..:/var/www
 
+    extra_hosts:
+      - host.docker.internal:host-gateway
+
     secrets:
       - app_secrets
+
+    entrypoint: ["/usr/local/bin/entrypoint-web.sh"]
+
+  php-worker:
+    container_name: php-worker
+    build:
+      context: ..
+      dockerfile: docker/php/Dockerfile
+
+    env_file:
+      - mariadb/envVars.public
+      - elasticsearch/envVars.public
+      - php/envVars.public
+
+    stdin_open: true
+    tty: true
+
+    volumes:
+      - ..:/var/www
+
+    healthcheck:
+      test: ["CMD", "pgrep", "-f", "php bin/console messenger:consume rabbitmq"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+    extra_hosts:
+      - host.docker.internal:host-gateway
+
+    secrets:
+      - app_secrets
+
+    entrypoint: ["/usr/local/bin/entrypoint-worker.sh"]
+
+    depends_on:
+      php-web:
+        condition: service_healthy
 
   mariadb:
     container_name: db
@@ -90,6 +134,20 @@ services:
       timeout: 5s
       retries: 3
       start_period: 30s
+
+  rabbitmq:
+    container_name: rabbitmq
+
+    hostname: rabbitmq
+
+    image: rabbitmq:4.1.2-management
+
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+    stdin_open: true
+    tty: true
 
 volumes:
   elasticsearch-data:

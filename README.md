@@ -32,12 +32,14 @@ docker compose -f docker/docker-compose.yml up --detach
 # verify stability
 docker container ls --format "table {{.Names}}\t{{.Status}}"
 NAMES           STATUS
-php             Up 2 minutes (healthy)
-db              Up 2 minutes (healthy)
-nginx           Up 2 minutes (healthy)
-elasticsearch   Up 2 minutes (healthy)
+php-web         Up 2 hours (healthy)
+php-worker      Up 2 hours (healthy)
+rabbitmq        Up 2 hours
+db              Up 2 hours (healthy)
+elasticsearch   Up 2 hours (healthy)
+nginx           Up 2 hours (healthy)
 
-docker exec php composer test-all
+docker exec -u www-data php-web composer test-all
 ./composer.json is valid
 PHPUnit 12.2.7 by Sebastian Bergmann and contributors.
 
@@ -46,14 +48,14 @@ Configuration: /var/www/phpunit.xml.dist
 
 Time: 00:02.270, Memory: 28.00 MB
 
-OK (16 tests, 34 assertions)
+OK (17 tests, 37 assertions)
 
 Generating code coverage report in HTML format ... done [00:00.006]
 ```
 Generating test data:
 
 ```
-docker exec -it php php -d memory_limit=2G bin/console doctrine:fixtures:load --append
+docker exec php-web php -d memory_limit=2G bin/console doctrine:fixtures:load --append
 ```
 
 Data volumes can be controlled via `tests/Fixtures/FixtureLimits.php`.
@@ -74,12 +76,12 @@ This generates data volume as follows:
 One can reindex the data in ElasticSearch by running:
 
 ```bash
-docker exec php php bin/console search:reindex all
+docker exec php-web php bin/console search:reindex all
 ```
 
 The command also takes individual entity names, e.g. `course`, `instructor`, etc:
 ```bash
-docker exec php php bin/console search:reindex course
+docker exec php-web php bin/console search:reindex course
 ```
 
 ## Endpoints
@@ -88,13 +90,23 @@ Data-view UI can be entered via `http://localhost:8080/institutions`.
 All entities can be viewed and searched there, via drilling down.
 
 All entities can be edited, but only students can be added
-(via the course detail page: `http://localhost:8080/courses/{id}/view`).
+(via the course detail page: `http://localhost:8080/courses/{id}/view`),
+or deleted (via the student detail page: `http://localhost:8080/students/{id}/view`).
 
 Searching can be tested via `http://localhost:8080/search`.
+
+RabbitMQ Management can be accessed via `http://localhost:15672/` with the default credentials (`guest`/`guest`).
+
+I am using ElasticVue - Windows app - to view the ElasticSearch data: https://elasticvue.com/.
+At time of writing, the PC I am using was struggling to run an ELK container, so I am using the app instead.
 
 
 ## Changes
 
 0.1 - Baseline setup copied from php8-swarm, with Docker Swarm and Redis stuff removed
 
-0.2 - Added ElasticSearch integration, with basic search functionality
+1.0 - Added ElasticSearch integration, with basic search functionality
+
+1.3 - Converting to using Symfony Messaging (in-process) for ElasticSearch indexing
+
+1.4 - Added RabbitMQ for messaging transport, with a worker container to handle ElasticSearch indexing

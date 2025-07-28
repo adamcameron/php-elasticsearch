@@ -23,19 +23,19 @@ class SearchIndexer
 
     public function postPersist(PostPersistEventArgs $args): void
     {
-        $indexMessage = new SearchIndexAddMessage($args);
+        $indexMessage = new SearchIndexAddMessage($args->getObject());
         $this->bus->dispatch($indexMessage);
     }
 
     public function postUpdate(PostUpdateEventArgs  $args): void
     {
-        $indexMessage = new SearchIndexUpdateMessage($args);
+        $indexMessage = new SearchIndexUpdateMessage($args->getObject());
         $this->bus->dispatch($indexMessage);
     }
 
     public function preRemove(PreRemoveEventArgs $args): void
     {
-        $indexMessage = new SearchIndexDeleteMessage($args);
+        $indexMessage = new SearchIndexDeleteMessage($args->getObject());
         $this->bus->dispatch($indexMessage);
     }
 }
