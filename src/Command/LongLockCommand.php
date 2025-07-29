@@ -24,18 +24,18 @@ class LongLockCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->lockingLogger->info('command_long_lock: started');
+        $this->lockingLogger->info('command_lock_long: started');
 
         $lock = $this->lockFactory->createLock('long_lock', 30);
-        $this->lockingLogger->info('command_long_lock: lock created');
+        $this->lockingLogger->info('command_lock_long: lock created');
 
         if ($lock->acquire(true)) {
-            $this->lockingLogger->info('command_long_lock: lock acquired');
+            $this->lockingLogger->info('command_lock_long: lock acquired');
             sleep(20); // Simulate a long-running process
-            $this->lockingLogger->info('command_long_lock: processing done, releasing lock');
+            $this->lockingLogger->info('command_lock_long: processing done, releasing lock');
             $lock->release();
         } else {
-            $this->lockingLogger->warning('command_long_lock: could not acquire lock');
+            $this->lockingLogger->warning('command_lock_long: could not acquire lock');
         }
 
         $output->writeln('Lock operation completed.');

@@ -21,18 +21,18 @@ class LockController extends AbstractController
     #[Route('/long', name: 'app_lock_long')]
     public function longLock(): Response
     {
-        $this->lockingLogger->info('app_lock_long: started');
+        $this->lockingLogger->info('web_lock_long: started');
 
         $lock = $this->lockFactory->createLock('long_lock', 30);
-        $this->lockingLogger->info('app_lock_long: lock created');
+        $this->lockingLogger->info('web_lock_long: lock created');
 
         if ($lock->acquire(true)) {
-            $this->lockingLogger->info('app_lock_long: lock acquired');
+            $this->lockingLogger->info('web_lock_long: lock acquired');
             sleep(20); // Simulate a long-running process
-            $this->lockingLogger->info('app_lock_long: processing done, releasing lock');
+            $this->lockingLogger->info('web_lock_long: processing done, releasing lock');
             $lock->release();
         } else {
-            $this->lockingLogger->warning('app_lock_long: could not acquire lock');
+            $this->lockingLogger->warning('web_lock_long: could not acquire lock');
         }
 
         return new Response('Lock operation completed.');
