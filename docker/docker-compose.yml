@@ -36,6 +36,8 @@ services:
 
     volumes:
       - ..:/var/www
+      - /var/log/symfony:/var/log/symfony
+      - /tmp/symfony/lock:/tmp/symfony/lock
 
     extra_hosts:
       - host.docker.internal:host-gateway
@@ -61,6 +63,8 @@ services:
 
     volumes:
       - ..:/var/www
+      - /var/log/symfony:/var/log/symfony
+      - /tmp/symfony/lock:/tmp/symfony/lock
 
     healthcheck:
       test: ["CMD", "pgrep", "-f", "php bin/console messenger:consume rabbitmq"]
@@ -80,6 +84,8 @@ services:
     depends_on:
       php-web:
         condition: service_healthy
+      rabbitmq:
+        condition: service_started
 
   mariadb:
     container_name: db
@@ -148,6 +154,13 @@ services:
 
     stdin_open: true
     tty: true
+
+    healthcheck:
+      test: [ "CMD", "rabbitmq-diagnostics", "ping" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
 
 volumes:
   elasticsearch-data:

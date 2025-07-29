@@ -38,6 +38,7 @@ RUN ["apt-get", "install", "-y", "symfony-cli"]
 RUN mkdir -p /var/cache/symfony && chown www-data:www-data /var/cache/symfony && chmod 777 /var/cache/symfony
 RUN mkdir -p /var/cache/symfony/dev && chown www-data:www-data /var/cache/symfony/dev && chmod 777 /var/cache/symfony/dev
 RUN mkdir -p /var/log/symfony && chown www-data:www-data /var/log/symfony && chmod 777 /var/log/symfony
+RUN mkdir -p /tmp/symfony/lock && chown www-data:www-data /tmp/symfony/lock && chmod 777 /tmp/symfony/lock
 
 WORKDIR /tmp/composer
 COPY composer.json composer.lock /tmp/composer/

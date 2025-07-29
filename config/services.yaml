@@ -21,6 +21,14 @@ services:
     arguments:
       - { hosts: ['%env(ELASTICSEARCH_HOST)%:%env(ELASTICSEARCH_PORT)%'] }
 
+  Symfony\Component\Lock\Store\FlockStore:
+    arguments:
+      - '%env(APP_LOCK_DIR)%'
+
+  Symfony\Component\Lock\LockFactory:
+    arguments:
+      - '@Symfony\Component\Lock\Store\FlockStore'
+
 when@dev:
   services:
     App\Tests\DataFixtures\:

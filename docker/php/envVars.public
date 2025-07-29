@@ -1,5 +1,6 @@
 APP_ENV=dev
 APP_CACHE_DIR=/var/cache/symfony
+APP_LOCK_DIR=/tmp/symfony/lock
 APP_LOG_DIR=/var/log/symfony
 COMPOSER_CACHE_DIR=/tmp/composer-cache
 PHPUNIT_CACHE_RESULT_FILE=0
