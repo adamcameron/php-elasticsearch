@@ -2,6 +2,7 @@ monolog:
   channels:
     - messaging
     - locking
+    - events
 
   handlers:
     messaging:
@@ -15,3 +16,9 @@ monolog:
       path: '%kernel.logs_dir%/locking.log'
       level: debug
       channels: ['locking']
+
+    events:
+        type: stream
+        path: '%kernel.logs_dir%/events.log'
+        level: debug
+        channels: ['events']

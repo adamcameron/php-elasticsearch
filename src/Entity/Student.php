@@ -8,9 +8,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 
 #[ORM\Entity(repositoryClass: StudentRepository::class)]
-class Student extends AbstractSyncableToElasticsearch
+class Student extends AbstractSyncableToElasticsearch implements JsonSerializable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -169,7 +170,7 @@ class Student extends AbstractSyncableToElasticsearch
         return $this;
     }
 
-    public function toElasticsearchArray(): array
+    public function jsonSerialize(): array
     {
         return [
             'email' => $this->email,
@@ -179,6 +180,11 @@ class Student extends AbstractSyncableToElasticsearch
             'enrolmentYear' => $this->enrolmentYear,
             'status' => $this->status?->label(),
         ];
+    }
+
+    public function toElasticsearchArray(): array
+    {
+        return $this->jsonSerialize();
     }
 
     public function getSearchTitle(): string

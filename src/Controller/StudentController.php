@@ -6,15 +6,24 @@ use App\Entity\Course;
 use App\Entity\Department;
 use App\Entity\Enrolment;
 use App\Entity\Student;
+use App\Event\StudentRequestEvent;
 use App\Form\StudentType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class StudentController extends AbstractController
 {
+    public function __construct(
+        private readonly EventDispatcherInterface $eventDispatcher
+    ) {
+
+    }
+
+
     #[Route('/students', name: 'student_list')]
     public function list(EntityManagerInterface $em): Response
     {
@@ -51,6 +60,8 @@ class StudentController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
+            $this->eventDispatcher->dispatch(new StudentRequestEvent($request, $student));
+
             return $this->redirectToRoute('student_view', ['id' => $student->getId()]);
         }
 
@@ -81,6 +92,9 @@ class StudentController extends AbstractController
             $em->persist($enrolment);
 
             $em->flush();
+
+            $this->eventDispatcher->dispatch(new StudentRequestEvent($request, $student));
+
             return $this->redirectToRoute('course_view', ['id' => $course->getId()]);
         }
 
@@ -90,9 +104,10 @@ class StudentController extends AbstractController
         ]);
     }
     #[Route('/students/{id}/delete', name: 'student_delete', requirements: ['id' => '\d+'])]
-    public function delete(Student $student, EntityManagerInterface $em): Response
+    public function delete(Student $student, EntityManagerInterface $em, Request $request): Response
     {
         foreach ($student->getEnrolments() as $enrolment) {
+            $this->eventDispatcher->dispatch(new StudentRequestEvent($request, $student));
             $em->remove($enrolment);
         }
 
